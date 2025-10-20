@@ -6,10 +6,10 @@ const COLOR = parseInt(process.env.COLOR, 16);
 
 // Items traduits en français avec emoji
 const ITEM_DISPLAY = {
-    book: { name: "Livre", emoji: "<:Grimoir_Halloween_x1:1429873244097347724> " },
     candy: { name: "Bonbons", emoji: "<:candy:1429877089154236466>" },
     candle: { name: "Bougies", emoji: "<:Bougie_Halloween_x1:1429878415988625451>" },
-    pumpkin: { name: "Citrouilles", emoji: "<:Citrouille_halloween_x1:1429878827248779387>" }
+    pumpkin: { name: "Citrouilles", emoji: "<:Citrouille_halloween_x1:1429878827248779387>" },
+    book: { name: "Livre", emoji: "<:Grimoir_Halloween_x1:1429873244097347724> " }
 };
 
 module.exports = {
