@@ -9,7 +9,7 @@ const ITEM_DISPLAY = {
     candy: { name: "Bonbons", emoji: "<:candy:1429877089154236466>" },
     candle: { name: "Bougies", emoji: "<:Bougie_Halloween_x1:1429878415988625451>" },
     pumpkin: { name: "Citrouilles", emoji: "<:Citrouille_halloween_x1:1429878827248779387>" },
-    book: { name: "Livre", emoji: "<:Grimoir_Halloween_x1:1429873244097347724> " }
+    book: { name: "Livres", emoji: "<:Grimoir_Halloween_x1:1429873244097347724>" }
 };
 
 module.exports = {
@@ -33,7 +33,23 @@ module.exports = {
             const inventoryText = Object.entries(userData.inventory)
                 .map(([key, amount]) => {
                     const item = ITEM_DISPLAY[key];
-                    return `${item?.emoji || ""} ${item?.name || key} : ${amount}`;
+                    // Ordre souhaité
+                    const ORDER = ["candy", "candle", "pumpkin", "book"];
+                    // Trouver la première clé présente dans l'inventaire selon l'ordre désiré
+                    const firstKey = ORDER.find(k => k in userData.inventory);
+                    if (key === firstKey) {
+                        // Construire le texte de l'inventaire dans l'ordre désiré
+                        return ORDER
+                            .filter(k => k in userData.inventory)
+                            .map(k => {
+                                const amt = userData.inventory[k] ?? 0;
+                                const it = ITEM_DISPLAY[k];
+                                return `${it?.emoji || ""} ${it?.name || k} : ${amt}`;
+                            })
+                            .join("\n");
+                    }
+                    // Les autres éléments retournent une chaîne vide (ne restent pas visibles)
+                    return "";
                 })
                 .join("\n");
 
