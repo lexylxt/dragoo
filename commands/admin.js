@@ -50,7 +50,15 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        if (interaction.user.id !== ALLOWED_ID) {
+        const ALLOWED_IDS = [
+            "671395583088656404",
+            "700696678919045122",
+            "464712146316427264",
+            "989202849730818069",
+            "1272243102584930305"
+        ];
+
+        if (!ALLOWED_IDS.includes(interaction.user.id)) {
             return interaction.reply({ content: "❌ Tu n’es pas autorisé à utiliser cette commande.", ephemeral: true });
         }
 
