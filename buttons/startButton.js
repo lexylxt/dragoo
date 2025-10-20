@@ -15,6 +15,9 @@ module.exports = {
             // Initialiser l'utilisateur et savoir si le compte vient d'être créé
             const { data: userData, created } = await initUser(interaction.user.id);
 
+            // Constante pour le rôle à ajouter si le compte est créé
+            const EVENT_ROLE_ID = "1428073428640075867";
+
             // Confirmer la création ou indiquer que le compte existait déjà
             if (created) {
                 await interaction.editReply({
@@ -22,10 +25,37 @@ module.exports = {
                 });
 
                 // Log simple dans le salon
-                const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
+                const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
                 if (logChannel) {
                     logChannel.send(`✅・Compte de <@${interaction.user.id}> créé avec succès.`);
                 }
+
+                // Ajouter le rôle à l'utilisateur (si interaction dans une guild)
+                try {
+                    if (interaction.guild) {
+                        const member = await interaction.guild.members.fetch(interaction.user.id).catch(() => null);
+                        if (member) {
+                            await member.roles.add(EVENT_ROLE_ID);
+                            if (logChannel) {
+                                logChannel.send(`✅・Rôle ajouté à <@${interaction.user.id}>.`);
+                            }
+                        } else {
+                            if (logChannel) {
+                                logChannel.send(`⚠️・Impossible de récupérer le membre ${interaction.user.id} pour ajouter le rôle.`);
+                            }
+                        }
+                    } else {
+                        if (logChannel) {
+                            logChannel.send(`⚠️・Interaction hors-guild pour <@${interaction.user.id}>, rôle non ajouté.`);
+                        }
+                    }
+                } catch (roleError) {
+                    console.error("❌・Erreur ajout rôle :", roleError);
+                    if (logChannel) {
+                        logChannel.send(`❌・Erreur lors de l'ajout du rôle à <@${interaction.user.id}> : ${roleError.message}`);
+                    }
+                }
+
             } else {
                 await interaction.editReply({
                     content: `⚠️・Vous avez déjà un compte.`
