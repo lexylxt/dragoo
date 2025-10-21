@@ -8,10 +8,9 @@ module.exports = {
         if (interaction.user.id !== userId) {
             return interaction.reply({ content: "🚫 Tu ne peux pas interagir avec cet embed.", ephemeral: true });
         }
-        await module.exports.showMain(interaction, client, userId);
-    },
 
-    async showMain(interaction, client, userId) {
+        await interaction.deferUpdate(); // ✅ Added this line
+
         const embed = new EmbedBuilder()
             .setColor(COLOR)
             .setTitle("🎃 Boutique Halloween")
@@ -30,8 +29,8 @@ module.exports = {
         );
 
         const row2 = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId(`shopResell-${interaction.user.id}`).setLabel("Revendre").setStyle(ButtonStyle.Secondary).setEmoji("💰")
-        )
+            new ButtonBuilder().setCustomId(`shopResell-${userId}`).setLabel("Revendre").setStyle(ButtonStyle.Secondary).setEmoji("💰")
+        );
 
         await interaction.editReply({ embeds: [embed], components: [row, row2] });
     }

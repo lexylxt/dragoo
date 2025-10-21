@@ -6,9 +6,13 @@ module.exports = {
     customId: "shopBuyQuick",
     async execute(interaction, client) {
         try {
-            const [_, item, amountStr] = interaction.customId.split("-");
+            const [_, item, amountStr, userId] = interaction.customId.split("-");
+            if (interaction.user.id !== userId) {
+                console.log("Unauthorized click by", interaction.user.id, "expected", userId);
+                return interaction.reply({ content: "🚫 Tu ne peux pas interagir avec cet embed.", ephemeral: true });
+            }
+
             const lots = parseInt(amountStr);
-            const userId = interaction.user.id;
             
             const price = getItemPrice(item, lots);
             const quantity = getItemQuantity(item, lots);
@@ -24,6 +28,7 @@ module.exports = {
                 new ButtonBuilder().setCustomId(`shopConfirm-${item}-${lots}-${userId}`).setLabel("Procéder au paiement").setStyle(ButtonStyle.Success),
                 new ButtonBuilder().setCustomId(`shopCancel-${item}-${userId}`).setLabel("Annuler").setStyle(ButtonStyle.Danger)
             );
+
 
             await interaction.update({ embeds: [embed], components: [row] });
         } catch (err) {

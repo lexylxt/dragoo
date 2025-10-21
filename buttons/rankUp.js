@@ -12,10 +12,8 @@ module.exports = {
 
             // ✅ Sécurité : seul le bon user peut cliquer
             if (interaction.user.id !== userId) {
-                return interaction.reply({
-                    content: "🚫 Tu ne peux pas interagir avec ce message.",
-                    ephemeral: true
-                });
+                console.log("Unauthorized click by", interaction.user.id, "expected", userId);
+                return interaction.reply({ content: "🚫 Tu ne peux pas interagir avec cet embed.", ephemeral: true });
             }
 
             const userData = await getUserData(userId);

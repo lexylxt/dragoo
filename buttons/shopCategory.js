@@ -6,7 +6,11 @@ module.exports = {
     customId: "shopCategory",
     async execute(interaction, client) {
         try {
-            const userId = interaction.user.id;
+            const userId = interaction.customId.split("-")[2];
+            if (interaction.user.id !== userId) {
+                console.log("Unauthorized click by", interaction.user.id, "expected", userId);
+                return interaction.reply({ content: "🚫 Tu ne peux pas interagir avec cet embed.", ephemeral: true });
+            }
             const item = interaction.customId.split("-")[1]; // candle / pumpkin / book
 
             const itemNames = {
@@ -25,15 +29,15 @@ module.exports = {
                 .setFooter({ text: "Powered by Dragoo", iconURL: client.user.displayAvatarURL() });
 
             const row = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-1`).setLabel("x1").setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-2`).setLabel("x2").setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-5`).setLabel("x5").setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-10`).setLabel("x10").setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId(`shopBuyCustom-${item}`).setLabel("Custom").setStyle(ButtonStyle.Secondary)
+                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-1-${userId}`).setLabel("x1").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-2-${userId}`).setLabel("x2").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-5-${userId}`).setLabel("x5").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId(`shopBuyQuick-${item}-10-${userId}`).setLabel("x10").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId(`shopBuyCustom-${item}-${userId}`).setLabel("Custom").setStyle(ButtonStyle.Secondary)
             );
 
             const row2 = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId(`shopBack`).setLabel("Retour").setStyle(ButtonStyle.Danger).setEmoji("<:previous:1422926470535188541>")
+                new ButtonBuilder().setCustomId(`shopMain-${userId}`).setLabel("Retour").setStyle(ButtonStyle.Secondary).setEmoji("<:previous:1422926470535188541>")
             );
 
             await interaction.update({ embeds: [embed], components: [row, row2] });
