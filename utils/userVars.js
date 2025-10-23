@@ -104,14 +104,14 @@ const HALLOWEEN_RANKS = [
         roleId: "1425900915294208110",
         rank: 6,
         candyRequired: 1600,
-        itemsRequired: { candles: 0, pumpkin: 3, book: 1 }
+        itemsRequired: { candles: 10, pumpkin: 6, book: 0 }
     },
     {
         name: "Sorcier",
         roleId: "1425900937746186300",
         rank: 7,
         candyRequired: 2000,
-        itemsRequired: { candles: 0, pumpkin: 0, book: 2 }
+        itemsRequired: { candles: 10, pumpkin: 0, book: 1 }
     },
     {
         name: "Frankenstein",
@@ -125,14 +125,14 @@ const HALLOWEEN_RANKS = [
         roleId: "1425900990049026251",
         rank: 9,
         candyRequired: 2800,
-        itemsRequired: { candles: 0, pumpkin: 0, book: 3 }
+        itemsRequired: { candles: 0, pumpkin: 0, book: 2 }
     },
     {
         name: "Kraken",
         roleId: "1425901021837656165",
         rank: 10,
         candyRequired: 3200,
-        itemsRequired: { candles: 0, pumpkin: 6, book: 3 }
+        itemsRequired: { candles: 10, pumpkin: 6, book: 3 }
     }
 ];
 
